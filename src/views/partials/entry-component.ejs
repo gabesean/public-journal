@@ -1,0 +1,114 @@
+<article id="<%= _.kebabCase(entry.entryTitle) %>" class="block post mb-5">
+   <section class="entry-title box p-3">
+      <h1 class="title is-size-5-mobile is-size-4-tablet mb-5">
+         <%_ if (locals.disableLinks) { _%>
+            <%= _.truncate(entry.entryTitle, {"length": 82, "omission" : ' ...' }); -%>
+         <%_ } else { _%>
+            <a href="/entry/<%= entry._id %>">
+               <%= _.truncate(entry.entryTitle, {"length": 82, "omission" : ' ...' }); %>
+            </a>
+         <%_ } _%>
+
+      </h1>
+
+      <p class="has-text-weight-semibold has-text-dark">
+         <%= _.truncate(entry.createdBy.username, {"length": 27, "omission" : '...' }); %>
+      </p>
+      <div class="level is-mobile">
+         <div
+            class="level-left is-flex is-flex-direction-column is-justify-content-center is-align-items-flex-start">
+            <span class="is-size-7 m-0 has-text-grey-dark">
+               <%# Fetch updated date, if not, fetch created date, if not, return current date %>
+               <%# the `undefined` in the first argument means that it will default to local timezone %>
+               <% const date = locals.entry?.updatedAt ? entry.updatedAt : locals.entry?.createdAt ? entry.createdAt : new Date() %>
+               <% const dateOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' } %>
+               <%= date.toLocaleDateString(undefined, dateOptions); %><strong class="has-text-black"><%= locals.entry?.updatedAt ? " ✎" : "" %></strong>
+            </span>
+         </div>
+
+      </div>
+   </section>
+   <div class="entry-content content">
+      <!-- <div class="columns is-variable">
+         <div class="column"> -->
+            <% if (!locals.displayFullEntry && entry.entryContent.length > 250) { %>
+
+               <%# HERE WE USE `-` scriptlet instead of `=` because we WANT to output HTML content provided by TinyMCE %>
+               <%- truncateHTML(entry.entryContent, 250, { "ellipsis" : ' ...' }); %>
+
+            <% } else { %>
+            <%# HERE WE USE `-` scriptlet instead of `=` because we WANT to output HTML content provided by TinyMCE %>
+            <%- entry.entryContent %>
+            <% } %>
+         <!-- </div>
+         
+      </div> -->
+   </div>
+   <% if (locals.displayFullEntry) { %>
+      <% if (locals.loggedInUser && JSON.stringify(locals.entry.createdBy._id) === JSON.stringify(locals.loggedInUser._id)) { %>
+         <nav class="entry-component-stats level is-mobile mb-0">
+            <div class="level-left">
+            </div>
+            <div class="level-right has-background-light">
+               <div class="level-item">
+                  <form class="control" id="delete-form" action="/delete" method="post">
+                     <button id="delete-button" class="button is-small is-light" type="submit" name="deleteEntry"
+                        value="<%= postId %>">
+                        <span class="icon is-small">
+                           <span>🗑️</span>
+                        </span>
+                     </button>
+                  </form>
+               </div>
+               <div class="level-item">
+                  <div class="control">
+                     <a href="/compose/<%= postId %>" class="button is-small is-light">
+                        <span class="icon is-small">
+                           <span>✏️</span>
+                        </span>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </nav>
+      <% } %>
+   <% } else { %>
+
+         <nav class="entry-component-stats">
+            <div class="tags">
+               <% if (!locals.disableLinks) { %>
+               <a class="tag" href="/entry/<%= entry._id %>/#comments">
+                  <span class="icon-text">
+                     <span class="icon is-size-7">
+                        💬
+                     </span>
+                     <span>
+                        <%= entry.entryComments.length %>
+                     </span>
+                  </span>
+               </a>
+               <% if (!locals.displayFullEntry && entry.entryContent.length> 250) { %>
+                  <% if (!locals.disableLinks) { %>
+                     <a class="tag" href="/entry/<%= entry._id %>">
+                        <span class="has-text-weight-semibold">Read more</span>
+                     </a>
+                  <% } %>
+               <% } %>
+               <% } else { %>
+                  <span class="tag">
+                     <span class="icon-text">
+                        <span class="icon is-size-7">
+                           💬
+                        </span>
+                        <span>
+                           <%= entry.entryComments.length %>
+                        </span>
+                     </span>
+                  </span>
+               <% } %>
+            </div>
+         </nav>
+
+   <% } %>
+
+</article>

@@ -1,0 +1,13 @@
+<% if (locals.messages) { %>
+   <div class="timed-notification-section">
+      <div class="timed-notification-container is-flex is-flex-direction-column">
+         <% Object.entries(locals.messages)?.forEach(([key, val], i)=> { %>
+
+            <%# Error message values are an array of strings so we need to further loop through them %>
+            <% val.forEach((messageText) => { %>
+               <%- include("notification-timed", { message: { type: key, text: messageText }}) -%>
+            <% }) %>
+         <% }) %>
+      </div>
+   </div>
+<% } %>

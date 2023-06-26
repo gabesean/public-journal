@@ -1,0 +1,30 @@
+<% if (message) { %>
+    <% let notificationProps = {} %>
+
+    <%# Switch notification color and glyph based on message.type %>
+    <% switch (message.type) {
+        case 'error': %>
+            <% notificationProps = {class: 'is-danger is-light', glyph: "🚫" }
+            break;
+        case 'info': %>
+            <% notificationProps = {class: 'is-info is-light', glyph: "ℹ️" }
+            break;
+        default: %>
+            <% notificationProps = {class: '', glyph: "✨" } 
+            break;
+    } %>
+
+    <div class="notification notification-timed animate-glideIn" data-name="notification-cookie">
+        <div class="notification-header tag <%= notificationProps.class %> px-2 py-1">
+            <span class="icon-text">
+                <span class="icon">
+                    <%= notificationProps.glyph %>
+                </span>
+                <span><%= `${message.type[0].toUpperCase()}${message.type.slice(1)}` %></span>
+            </span>
+        </div>
+        <button title="Clear notification" aria-label="Clear notification" type="button" class="delete"></button>
+        <%= message.text %>
+        <progress class="progress is-small <%= notificationProps.class %>" value="100" max="100">100%</progress>
+    </div>
+<% } %>

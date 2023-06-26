@@ -1,0 +1,69 @@
+<%- include("partials/header") -%>
+
+<div id="wrapper">
+	
+	<div class="banner-container">
+	
+		<section class="hero is-large">
+			<div class="hero-body">
+				<div class="auth-form content container w-fit-content">
+	
+					<div class="block has-text-centered">
+						<h1>Sign in</h1>
+						<% if (locals.foundUser) { %>
+						<p>Welcome back!</p>
+						<% } %>
+					</div>
+					<form class="box" id="sign-in-form" action="/sign-in" method="POST">
+						<div class="field">
+							<label for="username" class="label">Username</label>
+							<div class="control has-icons-left has-icons-right">
+								<% if (locals.foundUser) { %>
+								<input required class="input" type="text" name="username" id="username" value="<%= foundUser %>" disabled>
+								<% } else { %>
+								<input required autofocus autocomplete="username" class="input" type="text" name="username" id="username">
+	
+								<% } %>
+	
+								<span class="icon is-small is-left">
+									👤
+								</span>
+							</div>
+							<% if (locals.foundUser) { %>
+							<p class="help">Not you? <a href="/">Go back.</a></p>
+							<% } %>
+						</div>
+						<div class="field password-field">
+							<label for="password" class="label">Password</label>
+							<div class="control has-icons-left has-icons-right">
+								<input autocomplete="current-password" class="password-input input <% if (locals.errMessage) { %>is-danger<% } %>" type="password" name="password" id="password">
+								<span class="icon is-small is-left">
+									🔒
+								</span>
+							</div>
+	
+							<% if (locals.errMessage) { %>
+							<p class="sign-in-help help is-danger"><%= errMessage %></p>
+							<% } %>
+	
+						</div>
+						<div class="field">
+							<div class="control">
+								<button type="submit" class="sign-in-button button is-black is-fullwidth">Sign in</button>
+							</div>
+						</div>
+					</form>
+					<div class="box">
+						<p>New to the Public Journal?</p>
+							<a class="has-text-" href="/sign-up">Create an account</a> or use an <code>anonymous account</code> to <a href="/compose">post</a>.
+	
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>

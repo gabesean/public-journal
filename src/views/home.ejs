@@ -1,0 +1,108 @@
+<%- include("partials/header") -%>
+
+<div id="wrapper">
+	<header class="banner-container">
+		<%- include("partials/banner-image") -%>
+		<section class="hero is-medium">
+			<div class="hero-body">
+				<div class="content container is-size-5-tablet is-size-6-mobile">
+					<h1><%= locals.aboutContent.cta1.title %></h1>
+					<p><%= locals.aboutContent.cta1.subtitle %></p>
+					<button type="button" id="get-started" class="button">
+						<span class="icon-text">
+							<span class="icon">
+								➔
+							</span>
+							<span>Get started</span>
+						</span>
+					</button>
+				</div>
+			</div>
+		</section>
+	</header>
+	<section class="hero is-medium is-light">
+		<div class="hero-body">
+			<div class="container">
+				<div class="columns is-variable is-6">
+
+					<div class="column">
+						<div class="is-flex is-justify-content-center">
+							<div class="entry-example-hero">
+
+								<%- include("partials/entry-component", { disableLinks: true, entry: { _id: "lol", entryTitle: "The most convincing headline ever", createdBy: { username: "Meerkat_truthful_25", _id: "rofl" }, entryContent: "I think this is the best entry <strong>I've ever made</strong>. I should <u>win awards</u> for this. My family is going to be <i>so proud</i>. I'm honestly surprised more people haven't seen this. This is a <strong>true breakthrough</strong> in journalism.", entryDate: "01/01/2023", entryComments: ["Woah", "wow", "This is truly your best one yet."]} }) -%>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="column content has-text-right is-size-5-tablet is-size-6-mobile">
+						<span class="icon is-large is-size-1">
+							<%= locals.aboutContent.cta2.icon %>
+						</span>
+						<h1>
+							<%= locals.aboutContent.cta2.title %>
+						</h1>
+						<p>
+							<%= locals.aboutContent.cta2.subtitle %>
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<main class="is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
+		<div class="container py-2">
+
+			<%- include("partials/entry-commands") -%>
+
+		</div>
+
+		<div id="postList" class="section">
+			<div class="container">
+
+				<%- include("partials/notification-regular") -%>
+
+				<% if (locals.entry.length) { %>
+
+				<p class="title is-size-3-mobile is-size-3-tablet">The Latest</p>
+
+				<div class="columns mt-6 is-multiline is-variable is-6">
+					<% locals.entry.slice(0, 6).forEach((entry) => { %>
+
+						<div class="column is-full-mobile is-half-tablet is-one-third-fullhd">
+							<%- include("partials/entry-component", { entry: entry }) -%>
+						</div>
+
+					<% }); %>
+				</div>
+				<% } %>
+
+				<% if (entry.length > 6) { %>
+				<div class="container has-text-centered mt-6">
+					<a href="entry" class="button has-text-weight-bold">See all entries...</a>
+				</div>
+				<% } %>
+			</div>
+
+		</div>
+
+		<%- include("partials/entry-list-stats") -%>
+
+	</main>
+</div>
+
+<!-- MESSAGES TEST -->
+
+	<!-- <div class="timed-notification-section">
+		<div class="timed-notification-container is-flex is-flex-direction-column">
+				<%- include("partials/notification-timed", { message: {type: 'timeout' , text: 'INFO HAPPENED' } }) -%>
+				<%- include("partials/notification-timed", { message: {type: 'error', text: 'ERROR HAPPENED'} }) -%>
+				<%- include("partials/notification-timed", { message: {type: 'info', text: 'COOL STUFF HAPPENED'} }) -%>
+		</div>
+	</div> -->
+
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>

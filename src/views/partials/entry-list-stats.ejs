@@ -1,0 +1,49 @@
+<section class="section is-flex-grow-0">
+	<div class="container">
+		<hr>
+		<% if (locals.currentRoute === "profile") { %>
+		<div class="entry-stats-title tag is-medium">
+			My Stats
+		</div>
+		<% } else { %>
+		<div class="entry-stats-title tag is-medium">
+			Sitewide Stats
+		</div>
+		<% } %>
+
+		<div class="level my-1 entry-stats">
+			<div class="level-left mr-auto">
+				<div class="level-item has-text-centered">
+					<div class="field is-grouped is-grouped-multiline pl-auto">
+						<div class="control">
+							<span class="tag is-dark entry-stats-number">
+								<span class="icon-text">
+									<span class="icon">
+										📔
+									</span>
+									<span><%= locals.entry.length %></span>
+								</span>
+							</span>
+
+						</div>
+
+						<div class="control">
+							<span class="tag entry-stats-number">
+								<span class="icon-text">
+									<span class="icon">
+										💬
+									</span>
+									<span>
+										<%= locals.commentsLength %>
+									</span>
+								</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</section>

@@ -1,0 +1,191 @@
+<%- include("partials/header") -%>
+
+<div id="wrapper">
+	<div class="banner-container">
+		<section class="section is-small">
+			<div class="container has-text-centered-mobile">
+
+				<% if (locals.loggedInUser.username) { %>
+					<div class="columns is-variable is-2 is-vcentered mb-5">
+						<div class="column">
+							<span class="icon is-medium is-size-3">👤</span>
+						</div>
+						<div class="column is-full-mobile is-full-tablet">
+							<span class="is-align-items-center">
+								<%= loggedInUser.username %>
+							</span>
+						</div>
+					</div>
+				<% } %>
+				<div class="level">
+					<div class="level-left">
+						
+							<div class="level-item">
+								<div class="tags has-addons">
+									<span class="tag">Account Level</span>
+									<span class="tag is-white"><%= locals.loggedInUser.anonymous === true ? 'Anonymous' : 'Normal' _%></span>
+								</div>
+							</div>
+	
+						<% if (locals.loggedInUser.accountCreationDate) { %>
+							<div class="level-item">
+								<div class="tags has-addons">
+									<span class="tag">Joined</span>
+									<% const dateOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' } %>
+									<span class="tag is-white"><%= loggedInUser.accountCreationDate.toLocaleDateString(undefined, dateOptions) _%></span>
+								</div>
+							</div>
+							<div class="level-item">
+								<div class="tags has-addons">
+									<span class="tag">Age</span>
+									<span class="tag is-white"><%= utils.getRelativeTime(loggedInUser.accountCreationDate).slice(0, -4) _%></span>
+								</div>
+							</div>
+						<% } %>
+					</div>
+				</div>
+
+			</div>
+
+		</section>
+	</div>
+
+	<% if (locals.errorNotification) { %>
+	<div class="container"><%- errorNotification %></div>
+	<% } %>
+
+	<section class="section">
+		<div id="account-management" class="container content">
+			<div class="block">
+				<h2>Account management</h2>
+			</div>
+			<% if (locals.loggedInUser.anonymous == true) { %>
+			<div class="box block mb-6">
+				<h3>Upgrade your account</h3>
+				<p>Access the ability to take your account anywhere by upgrading to an account with a username and a password.</p>
+				<a href="/sign-up" class="button is-small">Upgrade account</a>
+			</div>
+			<% } else { %>
+			<div class="box block mb-6">
+				<h3>Edit your login info</h3>
+				<p>Change your username.</p>
+				<form class="mr-2 mb-4" action="/verify-password" method="POST">
+					<button type="submit" class="button is-small">Change username</button>
+					<input hidden type="text" name="reason" value="changeUsername">
+				</form>
+				<p>Change your password.</p>
+				<form action="/verify-password" method="POST">
+					<button type="submit" class="button is-small">Change password</button>
+					<input hidden type="text" name="reason" value="changePassword">
+				</form>
+			</div>
+			<% } %>
+
+			<% if (locals.changePasswordForm?.isActive && "THE FUCK NO" === 'LOL') { %>
+			<div id="change-password-modal" class="modal change-password-modal  <%= changePasswordForm.isActive %>">
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title mb-0">Set up your new password</p>
+						<button type="button" class="delete" aria-label="close"></button>
+					</header>
+					<% if (locals.changePasswordForm.content) { %>
+					<%- changePasswordForm.content %>
+					<% } else { %>
+					<%- locals.verifyPassword %>
+					<% } %>
+				</div>
+			</div>
+			<% } %>
+
+
+			<% if (locals.changeUsernameForm?.isActive) { %>
+			<div id="change-username-modal" class="modal change-username-modal  <%= changeUsernameForm.isActive %>">
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title mb-0">Set up your new username</p>
+						<button type="button" class="delete" aria-label="close"></button>
+					</header>
+					<% if (locals.changeUsernameForm.content) { %>
+					<%- changeUsernameForm.content %>
+					<% } else { %>
+					<%- verifyPassword %>
+					<% } %>
+				</div>
+			</div>
+			<% } %>
+
+		</div>
+	</section>
+	<br>
+	<section class="section">
+		<div class="container content">
+			<hr>
+			<div class="block">
+				<h2>Danger zone</h2>
+			</div>
+			<div class="box mb-6">
+					<h3 id="delete-my-data">Delete your data</h3>
+					<p>Your <% if (locals.loggedInUser.anonymous == true) { %><code>anonymous</code> <% } %>account will be permanently deleted after the process is complete. Make sure your decision is final.</p>
+					<button type="button" class="button is-small is-dark js-modal-trigger" data-target="delete-account-modal">Delete account</button>
+			</div>
+			<div id="delete-account-modal" class="modal delete-account-modal">
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<span class="icon mr-1">
+							<span>⚠️</span>
+						</span>
+						<p class="modal-card-title mb-0">Caution</p>
+						<button type="button" class="delete" aria-label="close"></button>
+					</header>
+					<form action="/delete-account" method="POST">
+						<section class="modal-card-body">
+							<div class="columns">
+								<div class="column">
+									<p>Deleting your account is permanent; your data will be poofed out of existence. You will also be logged out shortly after continuing.</p>
+									<article class="message is-small">
+										<div class="message-body">
+											🎉 Thank you for using the Public Journal. We wish you the best in all your future endeavors and hope to see you back someday.
+										</div>
+									</article>
+								</div>
+								<div class="column">
+									<div class="is-flex is-justify-content-center">
+										<div class="modal-action-box box">
+											<div class="field">
+
+												<% if (loggedInUser.anonymous) { %>
+													<label class="label">Please type your username, <code><%= loggedInUser.username %></code> to
+														continue.</label>
+													<div class="control">
+														<input required autocomplete="username" class="input" type="text" placeholder="Your username"
+															name="username">
+													</div>
+													<% } else { %>
+														<label class="label">Please type your password to continue.</label>
+														<div class="control">
+															<input required autocomplete="current-password" class="input" type="password"
+																placeholder="Your password" name="password">
+															<input type="hidden" name="username" value="<%= loggedInUser.username %>">
+														</div>
+														<% } %>
+
+											</div>
+											<button type="submit" class="button is-black is-fullwidth">Delete account and logout</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>

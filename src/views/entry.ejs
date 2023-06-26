@@ -1,0 +1,107 @@
+<%- include("partials/header") -%>
+<div id="wrapper">
+	<div class="banner-container">
+		<%- include("partials/banner-image") -%>
+		<section class="hero is-small">
+			<div class="hero-body">
+				<div class="content container">
+
+				</div>
+			</div>
+		</section>
+	</div>
+	<section class="section">
+		<div class="container is-max-desktop">
+
+			<div class="tags mb-6 mt-2">
+				<span class="tag entry-stats-number">
+					<span class="icon-text">
+						<span class="icon">⏱️</span>
+						<span>
+							~ <%= utils.getAverageReadSpeed(locals.entry.entryContent) %>
+						</span>
+					</span>
+				</span>
+				<span class="tag entry-stats-number">
+					<span class="icon-text">
+						<span class="icon">🆒</span>
+						<span>
+							<%= getInnerText(locals.entry.entryContent).split(" ").length %> words
+						</span>
+					</span>
+				</span>
+				<span class="tag entry-stats-number">
+					<span class="icon-text">
+						<span class="icon">🔤</span>
+						<span>
+							<%= getInnerText(locals.entry.entryContent).length %> characters
+						</span>
+					</span>
+				</span>
+			</div>
+
+			<%- include("partials/entry-component", { entry: locals.entry }) -%>
+
+			
+		</div>
+	</section>
+	<section class="section">
+		<div class="container">
+			<div class="content">
+				<h2 class="is-size-4-desktop is-size-5-mobile">Comments</h2>
+				<div class="tags">
+					<span class="tag entry-stats-number">
+						<span class="icon-text">
+							<span class="icon">💬</span>
+							<span>
+								<%= locals.entry.entryComments.length %>
+							</span>
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="columns is-variable is-6">
+				<div class="column is-4">
+					
+					
+		
+					<form class="box post is-4-desktop is-6-tablet is-12-mobile is-hidden" id="add-comment-form" action="/add-comment" method="post">
+						<div class="field">
+							<div class="control is-expanded">
+								<textarea id="add-comment-textarea" rows="4" class="textarea has-fixed-size" name="commentBody" placeholder="Your comment" required></textarea>
+							</div>
+						</div>
+						<div class="field">
+							<div class="control">
+								<button id="add-comment-button" class="button is-small is-dark" type="submit" name="entryId" value="<%= postId %>">
+									<strong>Comment</strong>
+								</button>
+							</div>
+						</div>
+					</form>
+
+					<button type="button" id="show-comment-form" class="button is-small is-dark mb-5"><strong>Add a comment</strong></button>
+
+					<br>
+				</div>
+				<div class="column">
+					<div id="comments" class="columns is-multiline is-variable is-6 mt-3">
+
+						<% locals.entry.entryComments.sort((a, b) => b.createdAt - a.createdAt).forEach((comment) => { %>
+
+							<div class="column is-half-tablet is-one-third-widescreen mb-3">
+								<%- include("partials/comment-component", {comment: comment}) -%>
+							</div>
+
+						<% }); %>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>

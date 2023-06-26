@@ -1,0 +1,109 @@
+<%- include("partials/header") -%>
+
+<div id="wrapper">
+	<div class="banner-container">
+		<section class="section compose-section">
+			
+				<div class="container is-max-desktop">
+					<div class="compose-toolbar-wrap"></div>
+
+					<form class="is-loading" id="compose-form" action="<%= locals.route %>" method="post">
+
+						<article class="block post mb-5">
+							<div class="entry-content-background"></div>
+							<section class="entry-title box">
+								<div class="mb-5">
+									<div class="field">
+										<label class="is-sr-only label">Title</label>
+										<div class="control is-expanded">
+											<!-- TODO Add character maxLength with `contenteditable-max-length` npm package and live indicator on the page -->
+
+											<span contenteditable="true" id="compose-title" class="is-dark has-text-dark title is-size-5-mobile is-size-4-tablet" data-placeholder="Title" data-max-length="82" required><%= locals.entry?.entryTitle %></span>
+											<input type="hidden" name="postTitle" class="is-hidden" value="<%= locals.entry?.entryTitle %>">
+											<input type="hidden" name="editEntry" class="is-hidden" value="<%= locals.id %>">
+										</div>
+									</div>
+								</div>
+								<% if (locals.loggedInUser) { %>
+									<span class="has-text-weight-semibold has-text-dark">
+										<%= _.truncate(locals.loggedInUser.username, {"length": 27, "omission" : '...' }); %>
+									</span>
+								<% } %>
+								<div class="level is-mobile mb-0">
+									<div class="level-left is-flex is-flex-direction-column is-justify-content-center is-align-items-flex-start">
+										<span class="is-size-7 m-0 has-text-grey-dark">
+											<%# Fetch updated date, if not, fetch created date, if not, return current date %>
+											<%# the `undefined` in the first argument means that it will default to local timezone %>
+											<% const date = locals.entry?.updatedAt ? entry.updatedAt : locals.entry?.createdAt ? entry.createdAt : new Date() %>
+											<% const dateOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' } %>
+											<%= date.toLocaleDateString(undefined, dateOptions); %>
+											<strong class="has-text-black"><%= locals.entry?.updatedAt ? " ✎" : "" %></strong>
+										</span>
+									</div>
+								</div>
+								<nav class="entry-component-stats">
+									<div class="tags">
+										<span class="tag text-length-tag">
+											<span class="icon-text">
+												<span class="icon text-length-icon"></span>
+												<span class="text-length"></span>
+											</span>
+										</span>
+									</div>
+								</nav>
+							</section>
+							<div class="entry-content content mb-0">
+								<!-- <div class="columns is-variable"> -->
+									<!-- <div class="column"> -->
+										<div class="field">
+											<label class="is-sr-only label">Content</label>
+
+												<div contenteditable="true" id="compose-content" name="postArea" class="" placeholder="What comes to your mind?" rows="10"
+													required><%- locals.entry?.entryContent %></div>
+												<input type="hidden" name="postArea" class="is-hidden" value="<%= locals.entry?.entryContent %>">
+											<br>
+										</div>
+									</div>
+								<!-- </div> -->
+							<!-- </div> -->
+
+							<% if (locals.comments && locals.comments.length) { %>
+							<div class="is-flex is-justify-content-flex-end">
+								<nav class="entry-component-stats">
+									<div class="tags">
+										<a href="/entry/<%= locals._id %>/#comments">
+											<span class="tag">
+												<span class="icon-text">
+													<span class="icon is-size-7">
+														💬
+													</span>
+													<span>
+														<%= locals.comments.length %>
+													</span>
+												</span>
+											</span>
+										</a>
+									</div>
+								</nav>
+							</div>
+							<% } %>
+						</article>
+
+						<div class="control">
+							<button id="submit-button" type="submit" class="button is-dark">
+								<%= locals.submitButton %>
+							</button>
+						</div>
+
+					</form>
+				</div>
+			
+		</section>
+	</div>
+</div>
+
+
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>

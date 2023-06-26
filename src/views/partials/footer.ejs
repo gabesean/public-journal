@@ -1,0 +1,29 @@
+<footer class="footer">
+	<div class="container">
+		<div class="columns is-size-7 is-flex-direction-row-reverse">
+			<div class="column">
+				<div class="content has-text-right-tablet">
+					<div class="mb-1">
+						<p>Made with ✌︎ &amp; ♥</p>
+					</div>
+					<p>by <a href="https://gabrielelisavetsky.com">Gabriel Elisavetsky</a></p>
+				</div>
+			</div>
+			<div class="column">
+				<div class="content">
+					<div class="mb-1">
+						<a href="/" class="icon has-background-white-bis mr-1">
+							<span>PJ</span>
+						</a>
+						<strong> | </strong>
+						<i>For the public.</i>
+					</div>
+					<% const year=new Date().getFullYear() %>
+						<p>© <%= year %> PUBLIC JOURNAL v<%= locals.PACKAGE_VERSION %></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<%- include("scripts") -%>

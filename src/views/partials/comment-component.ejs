@@ -1,0 +1,87 @@
+<article id="<%= comment._id %>" class="box post comment-container">
+   <div class="entry-column is-flex is-justify-content-flex-end is-align-items-center">
+      <div class="entry-comments-title box m-0 p-2">
+         <div class="is-flex is-flex-direction-column is-justify-content-flex-end is-align-items-flex-end">
+
+            <p class="has-text-weight-semibold m-0">
+               <%# c.createdBy.forEach((user)=> { %>
+                  <%= _.truncate(comment.createdBy.username, {"length": 27, "omission" : '...' }); %>
+                     <%# }) %>
+            </p>
+            <span class="is-size-7 m-0 has-text-grey">
+               <%# Fetch updated date, if not, fetch created date, if not, return current date %>
+               <%# the `undefined` in the first argument means that it will default to local timezone %>
+               <% const date = comment?.updatedAt ? comment.updatedAt : comment?.createdAt ? comment.createdAt : new Date() %>
+               <%= utils.getRelativeTime(date); %><strong class="has-text-black"><%= comment?.updatedAt ? " ✎" : "" %></strong>
+            </span>
+
+         </div>
+      </div>
+   </div>
+
+   <div class="entry-content block">
+      <form class="edit-comment-form is-hidden" action="/edit-comment" method="post">
+         <div class="field">
+            <div class="control is-expanded">
+               <textarea rows="4" class="edit-comment-textarea textarea has-fixed-size" name="commentBody"
+                  required><%= comment.commentContent %></textarea>
+            </div>
+         </div>
+         <div class="field">
+            <div class="control is-flex is-justify-content-flex-start">
+               <button class="update-comment-button button is-small is-dark" type="submit" name="entryId"
+                  value="<%= postId %>"><strong>Update</strong></button>
+               <input type="hidden" class="is-hidden" name="commentId" value="<%= comment._id %>">
+            </div>
+         </div>
+      </form>
+      <span class="comment-body"><%= comment.commentContent _%></span>
+   </div>
+
+   <% if (locals.loggedInUser && JSON.stringify(comment.createdBy._id)===JSON.stringify(locals.loggedInUser._id)) { %>
+      <nav class="entry-component-stats level is-mobile mb-0">
+         <div class="level-left">
+         </div>
+         <div class="level-right has-background-light">
+            <div class="level-item">
+               <form class="control" id="delete-comment-form" action="/delete-comment" method="post">
+                  <button id="delete-button" class="button is-small is-light" type="submit" name="commentId"
+                     value="<%= comment._id %>">
+                     <span class="icon is-small">
+                        <span>🗑️</span>
+                     </span>
+                  </button>
+                  <input type="hidden" class="is-hidden" name="entryId" value="<%= postId %>">
+               </form>
+            </div>
+            <div class="level-item">
+               <div class="control">
+                  <button type="button" name="showEditComment" value="<%= comment._id %>"
+                     class="edit-button button is-small is-light">
+                     <span class="icon is-small">
+                        <span>✏️</span>
+                     </span>
+                  </button>
+               </div>
+            </div>
+         </div>
+      </nav>
+      <!-- <div class="level is-mobile mb-0 mt-5">
+                  <div class="level-left">
+                  </div>
+                  <div class="level-right">
+                     <div class="level-item is-flex is-justify-content-flex-end">
+                        <form class="delete-comment-form" action="/delete-comment" method="post">
+                           <button class="button is-small delete-button no-style-button" type="submit" name="commentId"
+                              value="<%= comment._id %>"><strong>Delete</strong></button>
+                           <input type="hidden" class="is-hidden" name="entryId" value="<%= postId %>">
+                        </form>
+                     </div>
+                     <div class="level-item is-flex is-justify-content-flex-end">
+                        <button type="button" name="showEditComment" value="<%= comment._id %>"
+                           class="edit-button button is-small is-black"><strong>Edit</strong></button>
+                     </div>
+                  </div>
+               </div> -->
+   <% } %>
+</article>

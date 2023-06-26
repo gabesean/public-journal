@@ -1,0 +1,53 @@
+<% if (locals.loggedInUser) { %>
+	<div class="navbar-end account-menu--container">
+		<div class="navbar-item is-relative ml-3">
+			<div class="dropdown is-right account-menu">
+				<button type="button" class="is-flex is-align-items-center menu-trigger has-text-weight-semibold" title="<% locals.loggedInUser.username %>" aria-haspopup="true" aria-expanded="false" aria-controls="account-menu">
+
+						<span class="is-hidden-mobile mr-2"><%= _.truncate(locals.loggedInUser.username, {"length": 30, "omission" : '...' }); %></span>
+						<span class="button"><%= utils.createUsernameInitials(locals.loggedInUser.username) %></span>
+
+				</button>
+				<div class="dropdown-menu navbar-dropdown__narrow" id="account-menu" role="menu">
+					<div class="dropdown-content">
+						<div class="dropdown-item">
+							<p><strong><%= _.truncate(locals.loggedInUser.username, {"length": 30, "omission" : '...' }); %></strong></p>
+						</div>
+						<% if (locals.loggedInUser?.anonymous===true) { %>
+							<div class="dropdown-item">
+								<span class="tag account-type-tag is-small mt-2 w-fit-content">
+									Anonymous account
+								</span>
+							</div>
+						<% } %>
+						<hr class="dropdown-divider">
+						<a href="/profile" class="dropdown-item">
+							<span class="icon-text">
+								<span class="icon">
+									👤
+								</span>
+								<span>My Journal</span>
+							</span>
+						</a>
+						<a href="/settings" class="dropdown-item">
+							<span class="icon-text">
+								<span class="icon">
+									⚙️
+								</span>
+								<span>Settings</span>
+							</span>
+						</a>
+						<%- userSignInLogout.signinOrLogout %>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+<% } else { %>
+	<div class="navbar-end account-menu--container">
+		<div class="navbar-item is-relative ml-3">
+			<a href="/sign-up" class="button login-navbar-button has-text-weight-bold">Sign up</a>
+		</div>
+	</div>
+<% } %>

@@ -1,0 +1,37 @@
+<%- include("partials/header") -%>
+
+<div id="wrapper">
+
+   <div class="banner-container">
+
+      <%- include("partials/banner-image", { animationOnly: true }) -%>
+
+      <section class="hero is-fullheight">
+         <div class="hero-body">
+            <div class="content container">
+               <div class="block ">
+                  <div class="icon-text is-align-items-center is-size-2">
+
+                     <span><%= locals.message.statusCode %></span>
+                     <span class="icon is-large has-text-white has-background-dark">
+                        <span>:-/</span>
+                     </span>
+                  </div>
+               </div>
+               <div class="block">
+                  <p>
+                     <%= locals.message.statusMessage %>
+                  </p>
+               </div>
+               <div class="block">
+                  <a href="/" class="button">Back to home</a>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+</div>
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>

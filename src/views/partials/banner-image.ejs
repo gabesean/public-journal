@@ -1,0 +1,14 @@
+<% if (locals.currentRoute === "profile" ) { %>
+
+	<div class="banner-image-container">
+		<img class="banner-image" src="/image/banner_profile.jpg" alt="Buenos Aires, Argentina">
+	</div>
+
+<% } else { %>
+	<div class="banner-image-container">
+
+		<%# if `animationOnly` is set to `true` on the include() template, then don't render image %>
+		<%# This is used in 404-type pages %>
+		<% if (!locals.animationOnly) { %><img class="banner-image" src="/image/banner.jpg" alt="Buenos Aires, Argentina"><% } %>
+	</div>
+<% } %>

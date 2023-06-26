@@ -1,0 +1,75 @@
+// Global Variables
+
+/* Font */
+$font-family-serif: "New York", "ui-serif", Georgia, Garramond, serif;
+$family-primary: $font-family-serif; // Bulma
+
+/* Colors */
+$almostwhite: #fafafa;
+$almostblack-er: #0a0a0a;
+$almostblack: #363636;
+$light-gray-3: #fbfbfb;
+$light-gray-2: #f4f4f4;
+$light-gray: #f0f0f0;
+$gray-2: #dbdbdb;
+$gray: #aeaeae;
+$dark-gray-4: #8f8f8f;
+$dark-gray-3: #6f6f6f;
+$dark-gray-2: #4a4a4a;
+$dark-gray: #3d3d3d;
+$dark-gray-transparent: rgba(61, 61, 61, 0.478);
+$dark-gray-border: #515151;
+
+/* Shadows */
+$text-shadow: 2px -2px 10px rgba(10, 10, 10, 0.552);
+$box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);
+
+/* Focus Styles */
+$focus-outline-offset: 1px;
+$focus-outline-size: 2px;
+$focus-outline-style: solid;
+$focus-outline-color: $dark-gray-4;
+$link-focus: none; // Bulma
+$link-focus-border: none; // Bulma
+
+/* `is-active` Styles */
+$link-active: none;
+$link-active-border: none;
+
+/* Link */
+$link: $dark-gray-3;
+
+/* Linear Gradients */
+$linear-gradient-banner-image: repeating-radial-gradient(
+   circle closest-corner, 
+   rgba(255, 221, 221, 0.25) 0%, 
+   
+   rgba(255, 255, 255, 0.6) 10%,
+   rgba(255, 255, 255, 0.8) 15%,
+   rgba(255, 221, 221, 0.25) 20%, 
+   rgba(255, 255, 255, 0) 25%, 
+   rgba(220, 246, 255, 0.25) 30%,
+
+   rgba(255, 255, 255, 0.8) 35%,
+   rgba(255, 255, 255, 0.6) 40%,
+
+   rgba(255, 221, 221, 0.25) 50%);
+
+/* Transitions */
+$transition-bg: background, border-color 0.5s ease-in-out 0.1s;
+$transition-bs: box-shadow 0.5s ease-in-out 0.1s;
+$transition-height: height 0.5s ease-in-out 0.1s;
+
+/* Animations */
+// Only way I've found to have variables changed by media queries is to use CSS variables because they are read at runtime and are calculated live in the browser
+:root {
+   --animate-notification-timed-incoming: 0.5s glideIn 1 cubic-bezier(0.42, 0, 0, 1);
+   --animate-notification-timed-exit: 2s glideOut 1 cubic-bezier(0.42, 0, 0, 1);
+
+   --animate-notification-regular-incoming: 0.5 glideIn_reduced 1 cubic-bezier(0.42, 0, 0, 1);
+   --animate-notification-regular-exit: 2s glideOut_reduced 1 cubic-bezier(0.42, 0, 0, 1);
+
+   --animate-banner-image: 200s 1s linearGradientShift 1 ease-in-out;
+   --animate-modal-incoming: 0.25s fadeUp 1 ease-in-out;
+   --animate-modal-background-incoming: 0.2s fadeIn 1 ease-in-out;
+}

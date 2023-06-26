@@ -1,0 +1,78 @@
+<nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+
+	<div class="container top-spacing-small is-flex is-justify-content-space-between">
+		<div class="navbar-flex is-relative">
+
+				<div class="navbar-brand is-align-items-center">
+
+						<button type="button" id="burger" class="navbar-burger has-background-white-ter is-align-self-center" aria-label="menu"
+							aria-expanded="false" data-target="navbarToggle">
+							<span aria-hidden="true"></span>
+							<span aria-hidden="true"></span>
+							<span aria-hidden="true"></span>
+						</button>
+
+						<a class="site-logo button has-background-white-ter px-4" href="/">
+							<span>PJ</span>
+						</a>
+
+						<% if (locals.pageTitle) { %>
+
+						<div class="is-flex is-flex-direction-column full-height is-justify-content-center mx-3">
+
+							<%# Page title & tag %>
+							<span class="title is-size-6-mobile is-size-4-tablet mb-0 has-text-weight-bold"><%= pageTitle %></span>
+
+							<noscript>
+								<%- include("notification-noscript") -%>
+							</noscript>
+
+						</div>
+						<% } %>
+
+				</div>
+
+				<div id="navbarToggle" class="navbar-menu navbar-dropdown__narrow">
+					<div class="navbar-end">
+
+						<a href="/entry" class="navbar-item">
+							All
+						</a>
+						<a href="/about" class="navbar-item">
+							About
+						</a>
+
+						<% if (!locals.loggedInUser) { %>
+							<div class="navbar-item">
+								<a href="/sign-in" class="sign-in-button">Sign in</a>
+							</div>
+						<% } %>
+					</div>
+				</div>
+		</div>
+
+		<%- include("navbar-account-menu") -%>
+
+		<div id="upgrade-or-delete-account-modal" class="modal upgrade-account-delete-modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+					<span class="icon mr-1">
+						<span>⚠️</span>
+					</span>
+					<p class="modal-card-title mb-0">Caution</p>
+					<button type="button" class="delete" aria-label="close"></button>
+				</header>
+				<section class="modal-card-body">
+					<div class="block">
+						<p>Logging out without creating an account (anonymous mode) will direct you to delete your account and let you start fresh with a new anonymous profile.</p>
+					</div>
+					<div class="block">
+						<p>Should you want to upgrade your account with a username and password so that you can use it on any device, you may do so <a href="/sign-up"><strong>here.</strong></a></p>
+					</div>
+					<button type="button" id="continue-to-logout" class="button is-black is-fullwidth">Continue to logout</button>
+				</section>
+			</div>
+		</div>
+	</div>
+</nav>

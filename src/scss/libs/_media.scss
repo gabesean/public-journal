@@ -1,0 +1,115 @@
+// @USE
+@use "vars" as *;
+
+/* MEDIA QUERIES */
+
+@mixin queries {
+	/* ---------------- REDUCE MOTION ---------------- */
+	@media (prefers-reduced-motion) {
+		:root {
+			--animate-notification-timed-incoming: 0.5s glideIn_reduced 1 cubic-bezier(0.42, 0, 0, 1);
+			--animate-notification-timed-exit: 2s glideOut_reduced 1 cubic-bezier(0.42, 0, 0, 1);
+			--animate-banner-image: none;
+			--animate-modal-incoming: 0.25s fadeUp_reduced 1 ease-in-out;
+			--animate-modal-background-incoming: 0.2s fadeIn 1 ease-in-out;
+		}
+	}
+
+	// ----------- MOBILE FIRST ----------- //
+
+	/* Tablet+ */
+	@media screen and (min-width: 769px) {
+		.compose-section {
+			padding: 3rem 1.5rem;
+		}
+	}
+
+	/* Desktop+ */
+	@media screen and (min-width: 1024px) {
+		.navbar-flex {
+			display: flex;
+			width: 100%;
+		}
+
+		.site-logo {
+			position: static;
+		}
+
+		.navbar-menu .navbar-item {
+			font-weight: 600 !important;
+		}
+
+		.navbar-menu .navbar-item a {
+			color: $dark-gray-2;
+		}
+
+		.navbar-item-shadow .navbar-item,
+		.navbar-item-shadow .navbar-item a {
+			color: white !important;
+			text-shadow: -1px 0 4px #000000, 0 0 8px #000000;
+		}
+		
+
+		.navbar-item-shadow .navbar-item:hover {
+			color: $gray-2 !important;
+		}
+
+		.account-menu--container {
+			margin-right: -0.75rem;
+		}
+
+		.timed-notification-section {
+			padding: 1.5rem 3rem !important;
+		}
+		
+		.timed-notification-container {
+			align-items: flex-end !important;
+		}
+	}
+
+	// ----------- NON-MOBILE FIRST ----------- //
+
+	/* Mobile */
+	@media screen and (max-width: 768px) {
+		.site-logo {
+			display: none;
+		}
+
+		.navbar-menu.is-active {
+			padding-top: 5rem;
+		}
+
+		.account-menu--container {
+			position: absolute;
+			right: 0;
+		}
+
+	}
+
+	/* Up until Desktop */
+	@media screen and (max-width: 1023px) {
+		.navbar-menu .sign-in-button {
+			display: flex;
+			width: 100%;
+			background-color: $almostblack-er;
+			color: white;
+			border-color: #dbdbdb;
+			border-width: 1px;
+			cursor: pointer;
+			justify-content: center;
+			padding-bottom: calc(0.5em - 1px);
+			padding-left: 1em;
+			padding-right: 1em;
+			padding-top: calc(0.5em - 1px);
+			text-align: center;
+			white-space: nowrap;
+		}
+
+		.navbar-item-shadow .navbar-item {
+			color: $almostblack;
+			/* text-shadow: -1px 0 4px #000000, 0 0 8px #000000; */
+		}
+	}
+}
+
+

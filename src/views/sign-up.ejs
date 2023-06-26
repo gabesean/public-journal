@@ -1,0 +1,54 @@
+<%- include("partials/header") -%>
+
+<div id="wrapper">
+	<div class="banner-container">
+		<section class="hero is-large">
+			<div class="hero-body">
+				<div class="auth-form content container">
+					<div class="block has-text-centered">
+						<h1>Sign up</h1>
+						<p>Create your account.</p>
+					</div>
+					<form class="box" id="sign-up-form" action="/sign-up" method="POST">
+						<div class="field">
+							<label for="username" class="label">Username</label>
+							<div class="control has-icons-left has-icons-right">
+								<input required autofocus autocomplete="username" class="username-input input" type="text" value="<%= newUser %>" name="username" id="username">
+								<span class="icon is-small is-left">
+									👤
+								</span>
+							</div>
+	
+							<% if (locals.userExists) { %>
+							<%- userExists -%>
+							<% } %>
+	
+						</div>
+						<div class="field password-field">
+							<label for="password" class="label">Password</label>
+							<div class="control has-icons-left has-icons-right">
+								<input required autocomplete="new-password" class="password-input input <% if (locals.errMessage) { %>is-danger<% } %>" type="password" name="password" id="password">
+								<span class="icon is-small is-left">
+									🔒
+								</span>
+							</div>
+							<% if (locals.errMessage) { %>
+							<p class="sign-in-help help is-danger"><%= errMessage %></p>
+							<% } %>
+	
+						</div>
+						<div class="field">
+							<div class="control">
+								<button type="submit" class="sign-up-button button is-black is-fullwidth">Create account</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+
+<%- include("partials/notification-messages") -%>
+
+<%- include("partials/footer") -%>
