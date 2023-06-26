@@ -160,11 +160,20 @@ app.use('/', authRouter);
 
 // ------------ Get Routes ------------ //
 app.get("/", (req, res) => {
+	const sortQuery = req.query.sort;
+	let sortDirections;
+
 	console.log(req.session)
+
+	if (sortQuery === "oldest") {
+		sortDirections = { 'createdAt': 1 };
+	} else {
+		sortDirections = { 'createdAt': -1 };
+	}
 
 	Entry.find({})
 		.populate({ "path": "createdBy", "strictPopulate": false })
-		.sort({ 'createdAt': -1 })
+		.sort(sortDirections)
 		.exec((err, entries) => {
 			if (err) {
 				console.log(err);
@@ -189,12 +198,24 @@ app.get("/", (req, res) => {
 		});
 });
 
+
 app.get("/entry", (req, res) => {
+	const sortQuery = req.query.sort;
+	let sortDirections;
+
+	console.log(req.session)
+
+	if (sortQuery === "oldest") {
+		sortDirections = { 'createdAt': 1 };
+	} else {
+		sortDirections = { 'createdAt': -1 };
+	}
+
 	try {
 
 		const findFunc = Entry.find({})
 			.populate({ "path": "createdBy", "strictPopulate": false })
-			.sort({ 'createdAt': -1 })
+			.sort(sortDirections)
 			.exec((err, entries) => {
 				if (err) {
 					console.log(err);

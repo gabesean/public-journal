@@ -10793,7 +10793,7 @@ a.navbar-item:hover {
   height: 100%;
 }
 
-#compose-form {
+#compose-form > article, #compose-form div {
   transition: filter 0.2s ease-in-out;
   visibility: hidden;
   filter: opacity(0);
@@ -10818,7 +10818,7 @@ a.navbar-item:hover {
   margin: auto;
   visibility: visible;
 }
-#compose-form.is-active {
+#compose-form.is-active > article, #compose-form.is-active div {
   visibility: visible;
   filter: opacity(1);
 }

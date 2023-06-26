@@ -386,9 +386,11 @@ a.navbar-item:hover {
 }
 
 #compose-form {
-	transition: filter 0.2s ease-in-out;
-	visibility: hidden;
-	filter: opacity(0);
+	> article, div {
+		transition: filter 0.2s ease-in-out;
+		visibility: hidden;
+		filter: opacity(0);
+	}
 	
 	&.is-loading::after {
 		@include loader;
@@ -402,8 +404,10 @@ a.navbar-item:hover {
 		visibility: visible;
 	}
 	&.is-active {
-		visibility: visible;
-		filter: opacity(1);
+		> article, div {
+			visibility: visible;
+			filter: opacity(1);
+		}
 	}
 
 	[contenteditable="false"] {

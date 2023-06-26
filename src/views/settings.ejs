@@ -60,24 +60,55 @@
 				<h2>Account management</h2>
 			</div>
 			<% if (locals.loggedInUser.anonymous == true) { %>
-			<div class="box block mb-6">
+			<div class="box mb-6">
 				<h3>Upgrade your account</h3>
-				<p>Access the ability to take your account anywhere by upgrading to an account with a username and a password.</p>
-				<a href="/sign-up" class="button is-small">Upgrade account</a>
+				<div class="block">
+					<p>Access the ability to take your account anywhere by upgrading to an account with a username and a password.</p>
+					<a href="/sign-up" class="button is-small">Upgrade account</a>
+				</div>
 			</div>
 			<% } else { %>
-			<div class="box block mb-6">
-				<h3>Edit your login info</h3>
-				<p>Change your username.</p>
-				<form class="mr-2 mb-4" action="/verify-password" method="POST">
-					<button type="submit" class="button is-small">Change username</button>
-					<input hidden type="text" name="reason" value="changeUsername">
-				</form>
-				<p>Change your password.</p>
-				<form action="/verify-password" method="POST">
-					<button type="submit" class="button is-small">Change password</button>
-					<input hidden type="text" name="reason" value="changePassword">
-				</form>
+			<div class="box mb-6">
+				<h3 class="title">Edit your login info</h3>
+				<div class="block">
+					<p>Change your username.</p>
+					<button type="button" class="change-username-button button is-small js-modal-trigger" data-target="verify-password-modal">Change username</button>
+					<div id="verify-password-modal" class="modal verify-password-modal">
+						<div class="modal-background"></div>
+						<div class="modal-card">
+							<header class="modal-card-head">
+								<span class="icon mr-1">
+									<span>🔒</span>
+								</span>
+								<p class="modal-card-title mb-0">Verify Password</p>
+								<button type="button" class="delete" aria-label="close"></button>
+							</header>
+							<form action="/verify-password" method="POST">
+								<section class="modal-card-body">
+									<p>Verify your password to continue.</p>
+									<div class="box">
+										<div class="field">
+											<label class="label">Password</label>
+											<div class="control">
+												<input required autocomplete="current-password" class="input" type="password" placeholder="Your password" name="password">
+												<input type="hidden" name="username" value="<%= loggedInUser.username %>">
+											</div>
+
+										</div>
+										<button type="submit" class="button is-dark is-fullwidth">Continue</button>
+									</div>
+								</section>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="block">
+					<p>Change your password.</p>
+					<form action="/verify-password" method="POST">
+						<button type="submit" class="change-password-button button is-small">Change password</button>
+						<input hidden type="text" name="reason" value="changePassword">
+					</form>
+				</div>
 			</div>
 			<% } %>
 
@@ -126,9 +157,11 @@
 				<h2>Danger zone</h2>
 			</div>
 			<div class="box mb-6">
-					<h3 id="delete-my-data">Delete your data</h3>
-					<p>Your <% if (locals.loggedInUser.anonymous == true) { %><code>anonymous</code> <% } %>account will be permanently deleted after the process is complete. Make sure your decision is final.</p>
-					<button type="button" class="button is-small is-dark js-modal-trigger" data-target="delete-account-modal">Delete account</button>
+					<h3 id="delete-my-data" class="title">Delete your data</h3>
+					<div class="block">
+						<p>Your <% if (locals.loggedInUser.anonymous == true) { %><code>anonymous</code> <% } %>account will be permanently deleted after the process is complete. Make sure your decision is final.</p>
+						<button type="button" class="button is-small is-dark js-modal-trigger" data-target="delete-account-modal">Delete account</button>
+					</div>
 			</div>
 			<div id="delete-account-modal" class="modal delete-account-modal">
 				<div class="modal-background"></div>
@@ -173,7 +206,7 @@
 														<% } %>
 
 											</div>
-											<button type="submit" class="button is-black is-fullwidth">Delete account and logout</button>
+											<button type="submit" class="button is-dark is-fullwidth">Delete account and logout</button>
 										</div>
 									</div>
 								</div>

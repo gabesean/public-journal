@@ -121,10 +121,15 @@ router.route("/enter")
 
 router.route("/sign-up")
 	.get((req, res) => {
-		res.render("sign-up", {
-			userSignInLogout: renderLoginLogoutButton(req),
-			newUser: req.body.username,
-		})
+		if (req.isAuthenticated()) {
+			res.redirect("/profile")
+		} else {
+			res.render("sign-up", {
+				userSignInLogout: renderLoginLogoutButton(req),
+				newUser: req.body.username,
+			})
+		}
+		
 	})
 	.post((req, res) => {
 		
@@ -180,29 +185,31 @@ router.route("/sign-up")
 							// !FIX THIS DOWN HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							console.log('ANONYMOUS USER ID', anonymousUserId)
 							
-								Entry.updateMany({ createdBy: { _id: anonymousUserId } }, {
-									createdBy: { _id: req.user._id }
-								}, (err, updatedEntries) => {
-									if (err) {
-										console.log(err)
-									} else {
-										updatedEntries
-									}
-								});
-								Comment.updateMany({ createdBy: { _id: anonymousUserId } }, {
-									createdBy: { _id: req.user._id }
-								}, (err, updatedEntries) => {
-									if (err) {
-										console.log(err)
-									}
-								});
+								// Entry.updateMany({ createdBy: { _id: anonymousUserId } }, {
+								// 	createdBy: { _id: req.user._id }
+								// }, (err, updatedEntries) => {
+								// 	if (err) {
+								// 		console.log(err)
+								// 	} else {
+								// 		updatedEntries
+								// 	}
+								// });
 
-								renderLoginLogoutButton(req);
-								User.findOneAndDelete({ _id: anonymousUserId }, (err, deletedUser) => {
-									if (err) {
-										console.log(err);
-									}
-								});
+								// Comment.updateMany({ createdBy: { _id: anonymousUserId } }, {
+								// 	createdBy: { _id: req.user._id }
+								// }, (err, updatedEntries) => {
+								// 	if (err) {
+								// 		console.log(err)
+								// 	}
+								// });
+
+								// renderLoginLogoutButton(req);
+								// User.findOneAndDelete({ _id: anonymousUserId }, (err, deletedUser) => {
+								// 	if (err) {
+								// 		console.log(err);
+								// 	}
+								// });
+
 								req.session.user = req.user;
 								req.session.save((err) => {
 									if (err) {
@@ -210,10 +217,19 @@ router.route("/sign-up")
 										return next(err)
 									}
 								});
-								return res.render("successful-sign-up", {
-									userSignInLogout: renderLoginLogoutButton(req),
-					
-								});
+
+								req.login(registeredUser, (err) => {
+                           if (err) {
+                              return next(err);
+                           }
+
+                           res.render("successful-sign-up", {
+                              loggedInUser: req.user,
+                              userSignInLogout: renderLoginLogoutButton(req),
+                           });
+                        });
+								
+								
 							// });
 						}
 					});
@@ -399,8 +415,21 @@ router.route("/profile")
 	.get((req, res) => {
 		
 		if (req.isAuthenticated()) {
+			const sortQuery = req.query.sort;
+			let sortDirections;
+
+			console.log(req.session)
+
+			if (sortQuery === "oldest") {
+				sortDirections = { 'createdAt': 1 };
+			} else {
+				sortDirections = { 'createdAt': -1 };
+			}
 			
-			Entry.find({ createdBy: req.user._id }, (err, entries) => {
+			Entry.find({ createdBy: req.user._id })
+				.sort(sortDirections)
+				.exec((err, entries) => {
+					
 				if (err) {
 					console.log(err)
 				} else {
@@ -449,33 +478,64 @@ router.route("/verify-password")
 	.get((req, res) => {
 		res.redirect("/settings");
 	})
-	.post((req, res) => {
+	.post((req, res, next) => {
 		if (req.isAuthenticated()) {
 
-			if (req.body.reason === "changeUsername") {
-				res.render("settings", {
-					userSignInLogout: renderLoginLogoutButton(req),
-					loggedInUser: req.user,
-					verifyPassword: verifyPassForm("change-username"),
-					changeUsernameForm: {
-						isActive: "is-active",
-					},
-				});
-			} else if (req.body.reason === "changePassword") {
-				res.render("settings", {
-					userSignInLogout: renderLoginLogoutButton(req),
-					loggedInUser: req.user,
-					verifyPassword: verifyPassForm("change-password"),
-					changePasswordForm: {
-						isActive: "is-active",
-					},
-				});
-			}
+			passport.authenticate("local", (err, user, info) => {
+            if (err) {
+					console.log(err);
+               return next(err);
+            }
+            if (info && info.name === "IncorrectPasswordError") {
+
+               // Send flash error to `/settings` route
+					req.flash("error", "Password is incorrect.");
+               res.redirect("/settings#account-management");
+               return;
+            }
+
+            if (req.body.reason === "changeUsername") {
+					res.render("settings", {
+						pageTitle: "Settings",
+						userSignInLogout: renderLoginLogoutButton(req),
+						loggedInUser: req.user,
+						verifyPassword: verifyPassForm("change-username", user),
+						changeUsernameForm: {
+							isActive: "is-active",
+						},
+					});
+				} else if (req.body.reason === "changePassword") {
+					res.render("settings", {
+						pageTitle: "Settings",
+						userSignInLogout: renderLoginLogoutButton(req),
+						loggedInUser: req.user,
+						verifyPassword: verifyPassForm("change-password", user),
+						changePasswordForm: {
+							isActive: "is-active",
+						},
+					});
+				} else {
+					req.flash(
+						"error",
+						"No reason was provided as why you are verifying your password. Please try again."
+					);
+					res.redirect("/settings");
+					return;
+				}
+				
+            // Continue to invoke the function `passport.authenticate()` returns to follow through with the response
+         })(req, res, next);
 
 		} else {
-			res.send("Oops. You must be logged in to do that.");
-		}
 
+			// Send flash error message to homepage since you're not logged in
+			req.flash(
+				"error",
+				"Oops. You must be logged in to do that."
+			);
+			res.redirect("/");
+			return;
+		}
 	});
 
 router.route("/change-username")
@@ -485,7 +545,11 @@ router.route("/change-username")
 	.post((req, res) => {
 		if (req.isAuthenticated()) {
 
+			
+
+
 			res.render("settings", {
+				pageTitle: "Settings",
 				userSignInLogout: renderLoginLogoutButton(req),
 				loggedInUser: req.user,
 				changeUsernameForm: {
@@ -511,6 +575,7 @@ router.route("/change-password")
 		if (req.isAuthenticated()) {
 
 			res.render("settings", {
+				pageTitle: "Settings",
 				userSignInLogout: renderLoginLogoutButton(req),
 				loggedInUser: req.user,
 				changeUsernameForm: {
@@ -589,6 +654,7 @@ router.route("/new-username")
 						const err = `<p class='username-taken help is-danger'>This username has been taken. Please choose a different one.</p>`;
 
 						res.render("settings", {
+							pageTitle: "Settings",
 							userSignInLogout: renderLoginLogoutButton(req),
 							loggedInUser: req.user,
 							changeUsernameForm: {
@@ -615,6 +681,7 @@ router.route("/new-username")
 												if (err) return next(err)
 											});
 											res.render("settings", {
+												pageTitle: "Settings",
 												errorNotification: "<div class='notification notification-nocache'>" + "Successfully changed your username." + "<button class='delete delete-nocache'></button></div>",
 												userSignInLogout: renderLoginLogoutButton(req),
 												loggedInUser: req.user,

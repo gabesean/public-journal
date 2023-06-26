@@ -31,6 +31,7 @@ I am unsure if this formatting is the best to showcase features but here they ar
   - The title field has a maximum character length, the content field **does not**
   - Delete your entries
   - Edit your entries
+- Sort journal entries
 - Comment on journal entries:
   - Delete your comments
   - Edit your comments
@@ -44,7 +45,7 @@ I am unsure if this formatting is the best to showcase features but here they ar
     - All your journal entries and comments are then moved over to your newly created normal account
   - Permanently delete your account + data
 - Normal account creation (username + password):
-  - Change your username and/or password
+  - (WIP) Change your username and/or password
   - Permanently delete your account + data
 - Flash notifications to alert the user of important actions
 

@@ -68,6 +68,61 @@ document.addEventListener('input', (e) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+   // ~~~~~~~~~~ SORT ENTRIES ~~~~~~~~~~ //
+   const sortEntriesSelect = document.querySelector('#sort-entries');
+
+   sortEntriesSelect?.addEventListener("change", handleSortEntries);
+
+   sortEntriesSelect ? handleSortEntries() : null;
+
+   function handleSortEntries(event) {
+      const urlQueries = new URLSearchParams(window.location.search);
+      const sortQuery = urlQueries.get('sort');
+
+      // handle event if from an event listener
+      if (event) {
+         const sortValue = event.target.value;
+
+         document.querySelector('#sort-entries').querySelector(`option[value=${sortValue}]`).selected = true;
+
+         if (sortValue !== "newest") {
+            urlQueries.set("sort", sortValue);
+            window.location.replace(`?${urlQueries.toString()}`)
+         } else {
+
+            // `window.location.pathname` returns the current route without queries so this function is portable
+            window.location.replace(window.location.pathname)
+         }
+      }
+      
+      // handle url queries if they are present
+      if (sortQuery) {
+         sortEntriesSelect.querySelector(`option[value=${sortQuery}]`).selected = true;
+      } else {
+         sortEntriesSelect.querySelector(`option[value=newest]`).selected = true;
+      }
+   }
+   
+
+   // ~~~~~~~~~~ VERIFY PASSWORD ROUTE ~~~~~~~~~~ //
+   const verifyPasswordForm = document.querySelector("[action='/verify-password']");
+
+   // When clicking on `.change-username-button` make sure the route directs to change username
+   const changeUsernameButton = document.querySelector(".change-username-button");
+
+   changeUsernameButton?.addEventListener("click", () => {
+      const reasonHiddenInput = Object.assign(document.createElement("input"), {
+         type: "hidden",
+         name: "reason",
+         value: "change-username"
+      });
+
+      verifyPasswordForm.append(reasonHiddenInput);
+   })
+
+   // When clicking on `.change-password-button` make sure the route directs to change password
+   const changePasswordButton = document.querySelector(".change-password-button");
+
    // ~~~~~~~~~~ LOGOUT ROUTE ~~~~~~~~~~ //
    continueToLogoutButton?.addEventListener("click", () => {
       if (window.location.href.includes("/settings")) {
@@ -94,8 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    // ~~~~~~~~~~ COMPOSE ROUTE ~~~~~~~~~~ //
-   
-
    composeForm
       ?.querySelector("#submit-button")
       .addEventListener("click", (event) => {
@@ -142,8 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
                ((event.metaKey || event.ctrlKey) && event.which === 90) /* CTRL/CMD + Z */ ||
                ((event.metaKey || event.ctrlKey) && event.which === 70) /* CTRL/CMD + F */ ||
                ((event.metaKey || event.ctrlKey) && event.which === 82) /* CTRL/CMD + R */;
-            
-            
          }
 
          if (event?.type === "paste") {
@@ -338,6 +389,12 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    function closeModal($el) {
+
+      // Remove all hidden inputs with `reason` attribute to reset the intended reason for specific modals
+      $el.querySelectorAll("input[name=reason][type=hidden]").forEach((hiddenInput) => {
+         hiddenInput.remove();
+      });
+
       $el.classList.remove("is-active");
    }
 

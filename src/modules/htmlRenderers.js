@@ -1,10 +1,10 @@
 // HTML RENDER FUNCTIONS
-function renderLoginLogoutButton(req) {
+function renderLoginLogoutButton(req, newlyRegisteredUser) {
 	let loginButton;
 	let signinOrLogout;
 
-	if (req.isAuthenticated()) {
-		if (req.user.anonymous) {
+	if (req?.isAuthenticated()) {
+		if (req?.user.anonymous) {
 			loginButton = "Logout";
 			signinOrLogout = `
 				<hr class="dropdown-divider">
@@ -32,7 +32,7 @@ function renderLoginLogoutButton(req) {
 	return { loginButton, signinOrLogout };
 }
 
-function verifyPassForm(route) {
+function verifyPassForm(route, user) {
 	const html = `<form action="/${route}" method="POST">
 						<section class="modal-card-body">
 							<p>You must verify your password before making any changes.</p>
@@ -40,6 +40,7 @@ function verifyPassForm(route) {
 								<label class="label">Current password</label>
 								<div class="control">
 									<input required autocomplete="password" class="input" type="password" placeholder="Your password" name="password">
+									<input required class="is-hidden" type="hidden" name="username" value="${user?.username}">
 								</div>
 							</div>
 							<button type="submit" class="button is-black is-fullwidth">Continue</button>
