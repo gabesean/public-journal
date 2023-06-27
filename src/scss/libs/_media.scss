@@ -35,8 +35,10 @@
 			position: static;
 		}
 
-		.navbar-menu .navbar-item {
-			font-weight: 600 !important;
+		.navbar-menu {
+			.navbar-item {
+				font-weight: 600 !important;
+			}
 		}
 
 		.navbar-menu .navbar-item a {

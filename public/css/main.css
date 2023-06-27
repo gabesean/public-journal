@@ -149,6 +149,7 @@
     font-size: 0;
     padding-top: 0;
     padding-bottom: 0;
+    margin-bottom: 0;
   }
   100% {
     filter: opacity(0);
@@ -10562,8 +10563,7 @@ body {
 }
 
 .notification-regular {
-  position: relative;
-  top: -3rem;
+  margin-bottom: 3rem;
   width: fit-content;
 }
 
@@ -10693,6 +10693,9 @@ a.navbar-item:hover {
 .navbar-item {
   transition: background, border-color 0.5s ease-in-out 0.1s;
 }
+.navbar-item .button {
+  font-weight: 600;
+}
 
 a.navbar-item:hover {
   color: initial;
@@ -10717,9 +10720,7 @@ a.navbar-item:hover {
 
 /* Entry Commands */
 .entry-commands {
-  position: relative;
-  top: -2rem;
-  background: #f4f4f4;
+  margin-bottom: 4rem !important;
 }
 
 /* Entry */
@@ -11018,7 +11019,8 @@ a.navbar-item:hover {
 }
 
 #add-comment-form {
-  position: relative;
+  position: sticky;
+  top: 1rem;
 }
 
 #add-comment-textarea {

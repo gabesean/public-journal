@@ -435,32 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Show Add Comment Form
-showCommentFormButton?.addEventListener("click", () => {
-	addCommentForm.classList.toggle("is-hidden");
-	if (showCommentFormButton.innerText.includes("Add a comment")) {
-		showCommentFormButton.innerText = "Hide comment area";
-		Object.assign(showCommentFormButton.style, {
-			backgroundColor: "unset",
-			fontWeight: "bold",
-			color: "black",
-			padding: 0
-		});
-		addCommentTextarea.focus();
-	} else {
-		showCommentFormButton.innerText = "Add a comment";
-		Object.assign(showCommentFormButton.style, {
-			backgroundColor: "black",
-			fontWeight: "bold",
-			color: "white",
-			paddingTop: "calc(.5em - 1px)",
-			paddingRight: "1em",
-			paddingBottom: "calc(.5em - 1px)",
-			paddingLeft: "1em",
-		});
-		addCommentTextarea.blur();
-	}
-});
 
 // Show Edit Comment Form
 showEditCommentFormButton?.forEach((showEdit) => {
@@ -581,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
    );
 
    accountMenuButton?.addEventListener("click", (event) => {
-		closeOpenMenus(event.currentTarget.parentElement);
+		closeOpenMenus(event.currentTarget.parentElement.parentElement);
 		setAriaExpanded(accountMenuButton, "toggle")
       accountMenu.classList.toggle("is-active");
    });

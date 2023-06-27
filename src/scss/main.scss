@@ -134,8 +134,7 @@ body {
 }
 
 .notification-regular {
-	position: relative;
-	top: -3rem;
+	margin-bottom: 3rem;
 	width: fit-content;
 }
 
@@ -256,10 +255,6 @@ body {
 	margin-left: 0 !important;
 }
 
-.navbar-menu {
-
-}
-
 .navbar-brand *:not(:last-of-type) {
 	/* margin-right: 0.75rem; */
 }
@@ -274,6 +269,10 @@ a.navbar-item:hover {
 
 .navbar-item {
 	transition: $transition-bg;
+
+	.button {
+		font-weight: 600;
+	}
 }
 
 a.navbar-item:hover {
@@ -301,9 +300,7 @@ a.navbar-item:hover {
 
 /* Entry Commands */
 .entry-commands {
-	position: relative;
-	top: -2rem;
-	background: $light-gray-2;
+	margin-bottom: 4rem !important;
 }
 
 /* Entry */
@@ -619,7 +616,8 @@ a.navbar-item:hover {
 }
 
 #add-comment-form {
-	position: relative;
+	position: sticky;
+	top: 1rem;
 }
 
 #add-comment-textarea {

@@ -52,11 +52,6 @@
 		</div>
 	</section>
 	<main class="is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
-		<div class="container py-2">
-
-			<%- include("partials/entry-commands") -%>
-
-		</div>
 
 		<div id="postList" class="section">
 			<div class="container">
@@ -66,6 +61,8 @@
 				<% if (locals.entry.length) { %>
 
 				<p class="title is-size-3-mobile is-size-3-tablet">The Latest</p>
+
+				<%- include("partials/entry-commands") -%>
 
 				<div class="columns mt-6 is-multiline is-variable is-6">
 					<% locals.entry.slice(0, 6).forEach((entry) => { %>

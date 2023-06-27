@@ -12,12 +12,10 @@
 		</section>
 	</div>
 	<main class="is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
-		<div class="container py-2">
-
-			<%- include("partials/entry-commands") -%>
-		</div>
 		<div id="postList" class="section">
 			<div class="container">
+
+				<%- include("partials/entry-commands") -%>
 
 				<% if (locals.entry.length) { %>
 				<div class="columns mt-3 is-multiline is-variable is-6">
