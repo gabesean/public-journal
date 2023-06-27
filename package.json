@@ -1,10 +1,10 @@
 {
-   "name": "PublicJournal",
+   "name": "publicjournal",
    "version": "1.1.0",
    "description": "",
    "main": "index.js",
    "scripts": {
-      "start": "nodemon . & npm run scss",
+      "dev": "nodemon . & npm run scss",
       "test": "echo \"Error: no test specified\" && exit 1",
       "scss": "sass --watch src/scss/main.scss public/css/main.css"
    },

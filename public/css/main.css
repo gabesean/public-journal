@@ -10667,6 +10667,7 @@ body {
   position: absolute;
   width: 100%;
   background: none;
+  z-index: 10;
 }
 
 .navbar-burger {

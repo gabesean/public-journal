@@ -859,5 +859,4 @@ app.post("/delete-comment", (req, res) => {
 });
 
 // Exporting app
-// module.exports = app
-// DETA SPACE NO LONGER NEEDS THIS MODULE EXPORTS? ^^^
+module.exports = app
