@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require('dotenv').config({ path: "./.env" });
+const dotenv = require('dotenv').config();
 const bodyParser = require("body-parser");
 var _ = require('lodash');
 const truncateHTML = require("html-truncate");
@@ -17,6 +17,7 @@ const MONGO_KEY = process.env.MONGO_KEY;
 // mongoDB
 // !!!!!!!!!!!!!!! IMPORTANT: RUN VALIDATORS GLOBALLY !!!!!!!!!!!!!!!
 mongoose.set("runValidators", true);
+mongoose.set('strictQuery', false);
 
 // Catch and log any initial errors
 mongoose.connect(`mongodb+srv://admin:${MONGO_KEY}@cluster0.p5ba3.mongodb.net`, {
@@ -140,7 +141,7 @@ const date = utils.getTheDate();
 
 
 // ENCRYPTION
-const secret = process.env.CRYPT_KEY;
+// const secret = process.env.CRYPT_KEY;
 // userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
 
 
@@ -412,17 +413,6 @@ app.get("/entry/:id", (req, res) => {
 	// 	} catch (err) {
 	// 		res.send(err);
 	// 	}
-});
-
-app.get("/about", (req, res) => {
-
-	res.render("about", {
-		pageTitle: "About",
-      loggedInUser: req.user,
-      userSignInLogout: renderLoginLogoutButton(req),
-      about: startObject.aboutHeading,
-      discardingTime: startObject.timeToDiscard,
-   });
 });
 
 app.get("/contact", (req, res) => {

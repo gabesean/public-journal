@@ -16,8 +16,8 @@ const { renderLoginLogoutButton, verifyPassForm, changeUsernameForm, changePassw
 // Create User & Anonymous Strategy for Passport
 passport.use(User.createStrategy());
 
-passport.use(new DummyStrategy(
-	(done) => {
+passport.use(
+	new DummyStrategy((done) => {
 		return done(null, { username: 'Anonymous' });
 	}
 ));
