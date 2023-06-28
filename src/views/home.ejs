@@ -58,28 +58,8 @@
 
 				<%- include("partials/notification-regular") -%>
 
-				<% if (locals.entry.length) { %>
+				<%-include("partials/entry-section-component", { numberOfDisplayedEntries: 6 }) -%>
 
-				<p class="title is-size-3-mobile is-size-3-tablet">The Latest</p>
-
-				<%- include("partials/entry-commands") -%>
-
-				<div class="columns mt-6 is-multiline is-variable is-6">
-					<% locals.entry.slice(0, 6).forEach((entry) => { %>
-
-						<div class="column is-full-mobile is-half-tablet is-one-third-fullhd">
-							<%- include("partials/entry-component", { entry: entry }) -%>
-						</div>
-
-					<% }); %>
-				</div>
-				<% } %>
-
-				<% if (entry.length > 6) { %>
-				<div class="container has-text-centered mt-6">
-					<a href="entry" class="button has-text-weight-bold">See all entries...</a>
-				</div>
-				<% } %>
 			</div>
 
 		</div>

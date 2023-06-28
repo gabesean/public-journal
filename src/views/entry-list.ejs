@@ -15,19 +15,7 @@
 		<div id="postList" class="section">
 			<div class="container">
 
-				<%- include("partials/entry-commands") -%>
-
-				<% if (locals.entry.length) { %>
-				<div class="columns mt-3 is-multiline is-variable is-6">
-					<% locals.entry.forEach((entry) => { %>
-
-						<div class="column is-full-mobile is-half-tablet is-one-third-fullhd">
-							<%- include("partials/entry-component", { entry: entry }) -%>
-						</div>
-
-					<% }); %>
-				</div>
-				<% } %>
+				<%-include("partials/entry-section-component") -%>
 
 			</div>
 		</div>

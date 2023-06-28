@@ -1,0 +1,38 @@
+<% if (locals.entry.length) { %>
+
+   
+
+   <% if (locals.numberOfDisplayedEntries) { %>
+      <p class="title is-size-3-mobile is-size-3-tablet">The Latest</p>
+   <% } %>
+
+   <%- include("entry-commands") -%>
+
+   <div class="columns mt-3 is-multiline is-variable is-6">
+      <% locals.entry.slice(0, locals.numberOfDisplayedEntries).forEach((entry) => { %>
+
+         <div class="column is-full-mobile is-half-tablet is-one-third-fullhd">
+            <%- include("entry-component", { entry: entry }) -%>
+         </div>
+
+      <% }); %>
+   </div>
+<% } %>
+
+<% if (locals.numberOfDisplayedEntries && entry.length > 6) { %>
+   <div class="has-text-centered mt-6">
+      <a href="entry" class="button has-text-weight-bold">See all entries...</a>
+   </div>
+
+<%# Show this if there are ZERO entries in the DB but change the wording based on the current route %>
+<% } else if (!entry.length) { %>
+   <div class="has-text-centered has-text-grey-light subtitle mt-6">
+
+      <% if (locals.currentRoute?.includes("profile")) { %>
+         <span>No entries to show. Create your first one!</span>
+      <% } else { %>
+         <span>No entries to show. Create the first one!</span>
+      <% } %>
+
+   </div>
+<% } %>
