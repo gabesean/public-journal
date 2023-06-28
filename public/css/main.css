@@ -11103,9 +11103,6 @@ code {
   .account-menu--container {
     margin-right: -0.75rem;
   }
-  .timed-notification-section {
-    padding: 1.5rem 3rem !important;
-  }
   .timed-notification-container {
     align-items: flex-end !important;
   }

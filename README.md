@@ -15,6 +15,7 @@ I had a lot of fun making this project and I hope you will too by using the demo
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Hurdles](#hurdles)
 - [Credits](#credits)
 - [License](#license)
 
@@ -66,6 +67,19 @@ Finally, use `npm run dev` to serve up your local dev server.
 ## Usage
 
 You can visit the demo website for yourself, or you can clone, and find a place to host your own version of this app!
+
+## Hurdles
+
+I've been coming to head with many hurdles with this project. Later on in my journey, I came across what I think is a race condition involving the npm module "connect-flash". Basically, I was trying to send `flash()` notifications to the user when they have actioned on specific things such as deleting an account or entering the wrong password during sign up, and sometimes the messages would not show up on the client if they were redirected or another ejs view has been rendered. I was seriously lucky I was able to find this [GitHub issue](https://github.com/mweibel/connect-session-sequelize/issues/20) literally not that long ago where a user named jakeorr provided some insight as to why this behavior is occuring. Basically, express & session do not wait for the async nature of the session to save before the response is served. So jakeorr suggested something like this:
+
+```js
+req.flash('message', 'Please check your email to confirm it.');
+req.session.save(function () {
+  res.redirect('/register');
+});
+```
+
+Which is what I will now be implementing in my app. Thank you [jakeorr](https://github.com/jakeorr).
 
 ## Credits
 

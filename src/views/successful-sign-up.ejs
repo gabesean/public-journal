@@ -5,7 +5,8 @@
 		<section class="hero is-large">
 			<div class="hero-body">
 				<div class="content container">
-					<h1>You've successfully signed up!</h1>
+					<h1>Hi, <%= locals.loggedInUser.username %>!</h1>
+					<h2>Welcome to the Public Journal!</h2>
 					<a class="button" href="/compose">New entry</a>
 				</div>
 			</div>

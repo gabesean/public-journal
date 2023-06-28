@@ -527,8 +527,11 @@ app.post("/create-entry", (req, res, next) => {
                   req.flash("error", val.properties.message);
                });
                // Send flash error(s) to `/compose` route
-               res.redirect("/compose");
-               return;
+					req.session.save((err) => {
+						if (err) return next(err);
+	
+						res.redirect("/compose");
+					})
             } else {
 
 					// SUCCESS
@@ -558,9 +561,11 @@ app.post("/create-entry", (req, res, next) => {
                req.flash("error", val.properties.message);
             });
             // Send flash error(s) to `/compose` route
-            res.redirect("/compose");
-            return;
-				
+				req.session.save((err) => {
+					if (err) return next(err);
+
+					res.redirect("/compose");
+				})
          } else {
 
             // Save anonUser to DB after entry validates successfully
@@ -623,15 +628,23 @@ app.post("/edit", (req, res) => {
                req.flash("error", val.properties.message);
             });
             // Send flash error(s) to `/compose/:id` route
-            res.redirect(`/compose/${entryId}`);
-            return;
+				req.session.save((err) => {
+					if (err) return next(err);
+
+					res.redirect(`/compose/${entryId}`);
+				})
          } 
 			
 			if (!entry) {
 
 				// If user tries to edit an entry which is not theirs HAHA!
 				req.flash("error", "Cannot edit an entry which is not yours. Nice try :)");
-				res.redirect(`/entry/${entryId}`);
+
+				req.session.save((err) => {
+					if (err) return next(err);
+
+					res.redirect(`/entry/${entryId}`);
+				})
 			} else {
 
 				// SUCCESS
@@ -657,10 +670,14 @@ app.post("/edit", (req, res) => {
 		// 		});
 	} else {
 
-      // Send flash error(s) to `/` route
-		req.flash("error", "You must be logged in to edit a post.")
-      res.redirect("/sign-in");
-		return;
+      // Send flash error(s) to `/sign-in` route
+		req.flash("error", "You must be logged in to edit a post.");
+		
+		req.session.save((err) => {
+			if (err) return next(err)
+
+			res.redirect("/sign-in");
+		})
    }
 });
 

@@ -122,7 +122,10 @@ router.route("/enter")
 router.route("/sign-up")
 	.get((req, res) => {
 		if (req.isAuthenticated()) {
-			res.redirect("/profile")
+
+			// Maybe the user winded up here by accident but if they really want to sign-up again they need to logout
+			res.redirect("/profile");
+
 		} else {
 			res.render("sign-up", {
 				userSignInLogout: renderLoginLogoutButton(req),
@@ -222,11 +225,11 @@ router.route("/sign-up")
                            if (err) {
                               return next(err);
                            }
-
-                           res.render("successful-sign-up", {
-                              loggedInUser: req.user,
-                              userSignInLogout: renderLoginLogoutButton(req),
-                           });
+									
+									// SUCCESS
+									// Redirect to `/profile` but flash a modal for onboarding/introduction
+									res.redirect("/profile");
+									
                         });
 								
 								
@@ -254,34 +257,52 @@ router.route("/sign-in")
 	})
 	.post((req, res, next) => {
 		passport.authenticate('local', (err, user, info) => {
-			if (err) { next(err); }
+			if (err) return next(err);
 			if (info && info.name === "IncorrectPasswordError") {
 
             // Send flash error to `/sign-in` route
-            req.flash("error", "Username or password is incorrect.");
-            res.redirect("/sign-in");
-            return;
+				req.flash("error", "Username or password is incorrect.");
+
+				req.session.save((err) => {
+					if (err) return next(err)
+
+					res.redirect("/sign-in");
+				})
          }
 			if (user) {
 				req.login(user, (err) => {
 					if (err) {
+						// Send flash error to `/sign-in` route
 						req.flash("error", "There was an error logging you in. Please try again momentarily.");
-                  res.redirect("/sign-in");
-					} else {
-						req.session.user = req.user;
+
 						req.session.save((err) => {
 							if (err) return next(err)
-						});
+		
+							res.redirect("/sign-in");
+						})
+					} else {
+
+						// SUCCESS
 						req.flash("info", "You've signed in successfully.");
-						res.redirect("/");
+
+						req.session.user = req.user;
+						req.session.save((err) => {
+							if (err) return next(err);
+
+							res.redirect("/");
+						});
 					}
 				})
 			} else {
 
             // Send flash error to `/sign-in` route
-            req.flash("error", "Username or password is incorrect.");
-            res.redirect("/sign-in");
-				return;
+				req.flash("error", "Username or password is incorrect.");
+
+				req.session.save((err) => {
+					if (err) return next(err)
+
+					res.redirect("/sign-in");
+				})
          }
 		})(req, res, next);
 	});
@@ -334,11 +355,15 @@ router.route("/delete-account")
                                  if (err) {
                                     console.log(err);
                                  } else {
-												req.flash(
-                                       "info",
-                                       "Your account and all of its data has been successfully deleted!"
-                                    );
-                                    res.redirect("/");
+
+												// SUCCESS
+												req.flash("info", "Your account and all of its data has been successfully deleted!");
+
+												req.session.save((err) => {
+													if (err) return next(err)
+								
+													res.redirect("/");
+												})
                                  }
                               });
                            }
@@ -347,18 +372,26 @@ router.route("/delete-account")
                   }
                });
             } else {
-               req.flash("error", "Username is incorrect.");
-               res.redirect("/settings#delete-my-data");
-					return;
+
+					// Send flash error to `/settings` route
+					req.flash("error", "Username is incorrect.");
+
+					req.session.save((err) => {
+						if (err) return next(err)
+	
+						res.redirect("/settings#delete-my-data");
+					})
             }
          } else {
 
-            req.flash(
-               "error",
-               "You must be logged in to delete an account!"
-            );
-            res.redirect("/");
-				return;
+				// Send flash error to `/` route
+				req.flash("error", "You must be logged in to delete an account!");
+
+				req.session.save((err) => {
+					if (err) return next(err)
+
+					res.redirect("/");
+				})
          }
       } else {
 			passport.authenticate("local", (err, user, info) => {
@@ -370,8 +403,12 @@ router.route("/delete-account")
 
                // Send flash error to `/settings` route
 					req.flash("error", "Password is incorrect.");
-               res.redirect("/settings#delete-my-data");
-               return;
+
+					req.session.save((err) => {
+						if (err) return next(err)
+	
+						res.redirect("/settings#delete-my-data");
+					})
             }
 
             Entry.deleteMany({ createdBy: { _id: req.user._id } }, (err) => {
@@ -389,13 +426,15 @@ router.route("/delete-account")
                                  console.log(err);
                               } else {
 
+											// SUCCESS
 											// Send flash info message to homepage of user account having successfully been deleted
-                                 req.flash(
-                                    "info",
-                                    "Your account and all of its data has been successfully deleted!"
-                                 );
-                                 res.redirect("/");
-											return;
+											req.flash("info", "Your account and all of its data has been successfully deleted!");
+
+											req.session.save((err) => {
+												if (err) return next(err)
+							
+												res.redirect("/");
+											})
                               }
                            });
                         }
@@ -488,10 +527,14 @@ router.route("/verify-password")
             }
             if (info && info.name === "IncorrectPasswordError") {
 
-               // Send flash error to `/settings` route
+					// Send flash error to `/settings` route
 					req.flash("error", "Password is incorrect.");
-               res.redirect("/settings#account-management");
-               return;
+
+					req.session.save((err) => {
+						if (err) return next(err)
+	
+						res.redirect("/settings#account-management");
+					})
             }
 
             if (req.body.reason === "changeUsername") {
@@ -515,12 +558,14 @@ router.route("/verify-password")
 						},
 					});
 				} else {
-					req.flash(
-						"error",
-						"No reason was provided as why you are verifying your password. Please try again."
-					);
-					res.redirect("/settings");
-					return;
+					// Send flash error to `/settings` route
+					req.flash("error", "No reason was provided as why you are verifying your password. Please try again.");
+
+					req.session.save((err) => {
+						if (err) return next(err)
+	
+						res.redirect("/settings");
+					})
 				}
 				
             // Continue to invoke the function `passport.authenticate()` returns to follow through with the response
@@ -529,12 +574,13 @@ router.route("/verify-password")
 		} else {
 
 			// Send flash error message to homepage since you're not logged in
-			req.flash(
-				"error",
-				"Oops. You must be logged in to do that."
-			);
-			res.redirect("/");
-			return;
+			req.flash("error", "Oops. You must be logged in to do that.");
+
+			req.session.save((err) => {
+				if (err) return next(err)
+
+				res.redirect("/");
+			})
 		}
 	});
 
@@ -546,7 +592,6 @@ router.route("/change-username")
 		if (req.isAuthenticated()) {
 
 			
-
 
 			res.render("settings", {
 				pageTitle: "Settings",
