@@ -59,7 +59,7 @@ To create your own environment variable `.env` file, you can `cd` into the folde
 
 This app uses a MongoDB atlas cluster for the database, in the root `index.js` there two important environment variables, `MONGO_KEY` and `CRYPT_KEY`. You would need to provide your own mongoDB auth key, or edit the code to provide a local MongoDB database instead. The `CRYPT_KEY` is used to encrypt the user sessions and save them to a local storage.
 
-Finally, use `npm run start` to serve up your local dev server.
+Finally, use `npm run dev` to serve up your local dev server.
 
 **NOTE:** The `package.json` start command currently consists of using [nodemon](https://nodemon.io) to start up the server. If you have a preferred way to start the node server, go right ahead!
 
