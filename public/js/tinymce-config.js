@@ -30,6 +30,7 @@ tinymce.init({
       function handleEditorInit() {
          const composeForm = document.querySelector("#compose-form");
 
+         // Remove loading animation
          composeForm.classList.remove("is-loading")
          composeForm.classList.add("is-active")
       }

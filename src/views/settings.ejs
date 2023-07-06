@@ -69,6 +69,7 @@
 			</div>
 			<% } else { %>
 			<div class="box mb-6">
+				<span class="tag">CURRENTLY NON-FUNCTIONAL</span>
 				<h3 class="title">Edit your login info</h3>
 				<div class="block">
 					<p>Change your username.</p>
@@ -173,20 +174,22 @@
 						<p class="modal-card-title mb-0">Caution</p>
 						<button type="button" class="delete" aria-label="close"></button>
 					</header>
-					<form action="/delete-account" method="POST">
-						<section class="modal-card-body">
-							<div class="columns">
-								<div class="column">
-									<p>Deleting your account is permanent; your data will be poofed out of existence. You will also be logged out shortly after continuing.</p>
-									<article class="message is-small">
-										<div class="message-body">
-											🎉 Thank you for using the Public Journal. We wish you the best in all your future endeavors and hope to see you back someday.
-										</div>
-									</article>
-								</div>
-								<div class="column">
-									<div class="is-flex is-justify-content-center">
-										<div class="modal-action-box box">
+
+					<section class="modal-card-body">
+						<div class="columns">
+							<div class="column">
+								<p>Deleting your account is permanent; your data will be poofed out of existence.</p>
+								<p><strong>Here's what will happen:</strong></p>
+								<ol>
+									<li>We won't add a "deleted" tag to your account.</li>
+									<li>You account and all of its data will actually be purged from our systems.</li>
+									<li>You will be logged out shortly after continuing.</li>
+								</ol>
+							</div>
+							<div class="column">
+								<div class="is-flex is-justify-content-center">
+									<div class="modal-action-box box">
+										<form action="/delete-account" method="POST">
 											<div class="field">
 
 												<% if (loggedInUser.anonymous) { %>
@@ -206,13 +209,19 @@
 														<% } %>
 
 											</div>
-											<button type="submit" class="button is-dark is-fullwidth">Delete account and logout</button>
-										</div>
+											<button type="submit" class="button is-dark is-fullwidth">Delete account</button>
+										</form>
 									</div>
 								</div>
+								<article class="message is-small mt-4">
+									<div class="message-body">
+										🎉 Thank you for using the Public Journal. We wish you the best in all your future endeavors and hope to see you back someday.
+									</div>
+								</article>
 							</div>
-						</section>
-					</form>
+						</div>
+						
+					</section>
 				</div>
 			</div>
 		</div>

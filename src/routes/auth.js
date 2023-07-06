@@ -162,26 +162,34 @@ router.route("/sign-up")
 			});
 		}
 
-		User.findOne({
-			username: req.body.username
-		}, (err, userFound) => {
-			if (err) {
-				console.log(err)
-			} else {
-				if (userFound) {
-					const userAlreadyExists = "<p class='username-taken help is-danger'>This username has been taken. Please choose a different one.</p>"
+		// User.findOne({
+		// 	username: req.body.username
+		// }, (err, userFound) => {
+		// 	if (err) {
+		// 		console.log(err)
+		// 	} else {
+		// 		if (userFound) {
+		// 			const userAlreadyExists = "<p class='username-taken help is-danger'>This username has been taken. Please choose a different one.</p>"
 
-					res.render("sign-up", {
-						userSignInLogout: renderLoginLogoutButton(req),
-						newUser: req.body.username,
-						userExists: userAlreadyExists
-					})
-				} else {
+		// 			res.render("sign-up", {
+		// 				userSignInLogout: renderLoginLogoutButton(req),
+		// 				newUser: req.body.username,
+		// 				userExists: userAlreadyExists
+		// 			})
+		// 		} else {
 
 					User.register({ anonymous: false, username: req.body.username }, req.body.password, (err, registeredUser) => {
 						if (err) {
 							console.log(err);
-							return res.redirect("/sign-up");
+							
+							const userAlreadyExists = "<p class='username-taken help is-danger'>This username has been taken. Please choose a different one.</p>"
+
+							res.render("sign-up", {
+								userSignInLogout: renderLoginLogoutButton(req),
+								newUser: req.body.username,
+								userExists: userAlreadyExists
+							})
+
 						} else {
 							console.log('User.register', registeredUser)
 							// passport.authenticate("local", (err, user, info) => {
@@ -237,9 +245,9 @@ router.route("/sign-up")
 						}
 					});
 
-				}
-			}
-		});
+		// 		}
+		// 	}
+		// });
 
 	});
 

@@ -14,7 +14,7 @@ const journalEntrySchema = new mongoose.Schema({
    entryTitle: {
       type: String,
       required: [true, "You cannot submit an entry with an empty title."],
-      maxLength: [
+      maxlength: [
          82,
          "Your title is too long. It must be under 82 characters.",
       ],
@@ -22,6 +22,10 @@ const journalEntrySchema = new mongoose.Schema({
    entryContent: {
       type: String,
       required: [true, "You cannot submit an entry with no content."],
+      minlength: [
+         2,
+         "Your content is too short. It must be at least 2 characters."
+      ]
    },
    entryComments: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Comment" }],
 });
